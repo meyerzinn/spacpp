@@ -1,0 +1,40 @@
+namespace spacpp;
+
+// common
+
+struct vec2f {
+    x:float;
+    y:float;
+}
+
+// upstream
+
+table RespawnRequest {
+    name:string;
+}
+
+table UserInputs {
+    mouse:vec2f;
+    split:bool;
+    eject:bool;
+}
+
+
+// downstream
+
+table PlayerJoined {
+    id:uint32;
+    name:string;
+}
+
+table Death {
+    // alive represents the time alive in milliseconds.
+    alive:int64;
+}
+
+
+table GameSnapshot {
+    // timestamp represents the server time at the end of the snapshot.
+    timestamp:int64;
+
+}
