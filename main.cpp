@@ -159,27 +159,27 @@ int main() {
  */
 
     // game loop
-//    using clock = std::chrono::high_resolution_clock;
-//    std::chrono::nanoseconds lag(std::chrono::nanoseconds(0));
-//    auto time_start = clock::now();
-//    bool done = false;
-//
-//    while (!done) {
-//        auto current_time = clock::now();
-//        auto delta_time = current_time - time_start;
-//        time_start = current_time;
-//        lag += delta_time;
-//
-//        while (lag >= timestep) {
-//            lag -= timestep;
-//
-//            processInputs(registry);
-//            updatePhysics(registry);
-//            updateQuadtree(registry, quad);
-//            handleCollisions(registry, quad);
-//        }
-//        // send network snapshot
-//    }
+    using clock = std::chrono::high_resolution_clock;
+    std::chrono::nanoseconds lag(std::chrono::nanoseconds(0));
+    auto time_start = clock::now();
+    bool done = false;
+
+    while (!done) {
+        auto current_time = clock::now();
+        auto delta_time = current_time - time_start;
+        time_start = current_time;
+        lag += delta_time;
+
+        while (lag >= timestep) {
+            lag -= timestep;
+
+            processInputs(registry);
+            updatePhysics(registry);
+            updateQuadtree(registry, quad);
+            handleCollisions(registry, quad);
+        }
+        // send network snapshot
+    }
     net.join();
     return 0;
 }
