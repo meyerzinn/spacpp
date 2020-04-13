@@ -1,4 +1,4 @@
-namespace spacpp;
+namespace spacpp.protocol;
 
 // common
 
@@ -19,22 +19,55 @@ table UserInputs {
     eject:bool;
 }
 
-
 // downstream
-
-table PlayerJoined {
-    id:uint32;
-    name:string;
-}
 
 table Death {
     // alive represents the time alive in milliseconds.
     alive:int64;
 }
 
-
-table GameSnapshot {
-    // timestamp represents the server time at the end of the snapshot.
-    timestamp:int64;
-
+table PlayerSnapshot {
+    id:uint32;
+    name:string;
 }
+
+table PlayerCellSnapshot {
+    id:uint32;
+    owner:uint32;
+}
+
+table FoodCellSnapshot {
+    id:uint32;
+    position:vec2f;
+    mass:float;
+}
+
+union EntitySnapshot {
+    PlayerSnapshot,
+    PlayerCellSnapshot,
+    FoodCellSnapshot }
+
+struct CellDelta {
+    id:uint32 (key);
+    position:vec2f;
+    velocity:vec2f;
+    mass:float;
+}
+
+table WorldUpdate {
+    // list of entities that are out of range or no longer exist
+    delete:[uint32];
+    // introduce new entities (entities that come into range that have never been previously introduced are included)
+    snapshots:[EntitySnapshot];
+    // update existing entities
+    deltas:[CellDelta];
+}
+
+union Message {RespawnRequest, UserInputs, Death, WorldUpdate}
+
+table Packet {
+    timestamp:uint64;
+    message:Message;
+}
+
+root_type Packet;
